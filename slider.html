@@ -1,0 +1,344 @@
+<style>
+  #hero {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+    padding: 0 !important;
+  }
+
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    z-index: 1;
+  }
+  .hero-slide.is-active {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  /* Background image — contain, no overlay, no scale */
+  .hero-slide .hs-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  /* Content */
+  .hs-content {
+    position: absolute;
+    top: 50%;
+    left: 60px;
+    transform: translateY(-50%);
+    z-index: 5;
+    max-width: 520px;
+    text-align: left;
+  }
+
+  /* Animated elements — hidden by default */
+  .hs-tag,
+  .hs-name,
+  .hs-desig,
+  .hs-desc,
+  .hs-btn {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+
+  .hero-slide.is-active .hs-tag {
+    animation: hsUp 0.65s ease 0.2s forwards;
+  }
+  .hero-slide.is-active .hs-name {
+    animation: hsUp 0.7s ease 0.42s forwards;
+  }
+  .hero-slide.is-active .hs-desig {
+    animation: hsUp 0.65s ease 0.62s forwards;
+  }
+  .hero-slide.is-active .hs-desc {
+    animation: hsUp 0.65s ease 0.78s forwards;
+  }
+  .hero-slide.is-active .hs-btn {
+    animation: hsUp 0.65s ease 0.95s forwards;
+  }
+
+  @keyframes hsUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hs-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #c9a96e;
+    border-left: 2px solid #c9a96e;
+    padding-left: 10px;
+    margin-bottom: 14px;
+  }
+  .hs-name {
+    display: block;
+    font-size: 50px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+    margin: 0 0 10px 0;
+  }
+  .hs-desig {
+    display: block;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 16px;
+  }
+  .hs-desc {
+    display: block;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+  .hs-btn a {
+    display: inline-block;
+    padding: 13px 34px;
+    border: 1px solid #c9a96e;
+    color: #c9a96e;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: transparent;
+    transition:
+      background 0.3s,
+      color 0.3s;
+  }
+  .hs-btn a:hover {
+    background: #c9a96e;
+    color: #000;
+  }
+
+  /* Dots */
+  .hs-dots {
+    position: absolute;
+    bottom: 28px;
+    left: 60px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .hs-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition:
+      width 0.3s,
+      background 0.3s,
+      border-radius 0.3s;
+  }
+  .hs-dot.is-active {
+    width: 26px;
+    border-radius: 4px;
+    background: #c9a96e;
+  }
+
+  /* Progress bar */
+  .hs-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: #c9a96e;
+    z-index: 10;
+    transition: width linear;
+  }
+
+  /* Arrows */
+  .hs-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 46px;
+    height: 46px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+      background 0.25s,
+      border-color 0.25s;
+    user-select: none;
+  }
+  .hs-arrow:hover {
+    background: rgba(201, 169, 110, 0.25);
+    border-color: #c9a96e;
+  }
+  .hs-arrow.prev {
+    left: 18px;
+  }
+  .hs-arrow.next {
+    right: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .hs-content {
+      left: 24px;
+      max-width: calc(100% - 48px);
+      top: auto;
+      bottom: 80px;
+      transform: none;
+    }
+    .hs-name {
+      font-size: 30px;
+    }
+    .hs-dots {
+      left: 24px;
+    }
+    .hs-arrow {
+      display: none;
+    }
+  }
+</style>
+
+<!-- HERO SECTION -->
+<section id="hero" class="hero section">
+  <!-- SLIDE 1 -->
+  <div class="hero-slide is-active">
+    <div
+      class="hs-bg"
+      style="background-image: url(&quot;assets/img/hero.png&quot;)"
+    ></div>
+    <div class="hs-content">
+      <span class="hs-tag">Entrepreneur &amp; Visionary</span>
+      <span class="hs-name">Tanzina Islam Sarmi</span>
+      <span class="hs-desig">CEO &amp; Founder</span>
+      <span class="hs-desc"
+        >Entrepreneur · Brand Builder · Visionary Leader.<br />Leading multiple
+        successful businesses with passion, trust, and innovation.</span
+      >
+      <div class="hs-btn"><a href="#">Explore Businesses</a></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="hero-slide">
+    <div
+      class="hs-bg"
+      style="background-image: url(&quot;assets/img/hero-2.png&quot;)"
+    ></div>
+    <div class="hs-content">
+      <span class="hs-tag">Leadership &amp; Impact</span>
+      <span class="hs-name">Tanzina Islam Sarmi</span>
+      <span class="hs-desig">CEO &amp; Founder</span>
+      <span class="hs-desc"
+        >Driving growth across industries with relentless focus on excellence,
+        purpose, and lasting impact.</span
+      >
+      <div class="hs-btn"><a href="#about">Our Vision</a></div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="hero-slide">
+    <div
+      class="hs-bg"
+      style="background-image: url(&quot;assets/img/hero-3.jpeg&quot;)"
+    ></div>
+    <div class="hs-content">
+      <span class="hs-tag">Community &amp; Inspiration</span>
+      <span class="hs-name">Tanzina Islam Sarmi</span>
+      <span class="hs-desig">CEO &amp; Founder</span>
+      <span class="hs-desc"
+        >Committed to uplifting communities through education, opportunity, and
+        meaningful social impact.</span
+      >
+      <div class="hs-btn"><a href="#contact">Get in Touch</a></div>
+    </div>
+  </div>
+
+  <div class="hs-arrow prev" id="hsPrev">&#8249;</div>
+  <div class="hs-arrow next" id="hsNext">&#8250;</div>
+  <div class="hs-dots" id="hsDots"></div>
+  <div class="hs-progress" id="hsProgress"></div>
+</section>
+
+<script>
+  (function () {
+    const slides = document.querySelectorAll(".hero-slide");
+    const dotsWrap = document.getElementById("hsDots");
+    const progress = document.getElementById("hsProgress");
+    const SPEED = 5500;
+    let current = 0;
+    let timer = null;
+
+    slides.forEach(function (_, i) {
+      const d = document.createElement("button");
+      d.className = "hs-dot" + (i === 0 ? " is-active" : "");
+      d.addEventListener("click", function () {
+        go(i);
+        restart();
+      });
+      dotsWrap.appendChild(d);
+    });
+
+    const dots = dotsWrap.querySelectorAll(".hs-dot");
+
+    function resetAnimItems(slide) {
+      slide
+        .querySelectorAll(".hs-tag,.hs-name,.hs-desig,.hs-desc,.hs-btn")
+        .forEach(function (el) {
+          el.style.animation = "none";
+          el.style.opacity = "0";
+          el.style.transform = "translateY(32px)";
+          void el.offsetWidth;
+          el.style.animation = "";
+        });
+    }
+
+    function go(n) {
+      slides[current].classList.remove("is-active");
+      dots[current].classList.remove("is-active");
+      current = (n + slides.length) % slides.length;
+      resetAnimItems(slides[current]);
+      slides[current].classList.add("is-active");
+      dots[current].classList.add("is-active");
+    }
+
+    function restart() {
+      clearInterval(timer);
+      timer = setInterval(function () {
+        go(current + 1);
+      }, SPEED);
+    }
+
+    document.getElementById("hsPrev").addEventListener("click", function () {
+      go(current - 1);
+      restart();
+    });
+    document.getElementById("hsNext").addEventListener("click", function () {
+      go(current + 1);
+      restart();
+    });
+
+    restart();
+  })();
+</script>
